@@ -20,6 +20,7 @@ describe DiceGroup do
       dg.dice.should == [Die.new(2), Die.new(3), Die.new(4)]
     end
   
+    # This one seems like it may not be strictly necessary
     it "should accept an array of numbers and dice" do
       dice = [4, Die.new(3), 2]
       dg = DiceGroup.new(dice)
