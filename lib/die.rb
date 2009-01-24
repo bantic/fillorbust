@@ -10,6 +10,15 @@ class Die
   end
   
   def ==(other)
-    @value == other.value
+    case other
+    when Fixnum
+      @value == other
+    when Die
+      @value == other.value
+    end
+  end
+  
+  def <=>(other)
+    @value <=> other.value
   end
 end

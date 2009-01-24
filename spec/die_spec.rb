@@ -18,6 +18,14 @@ describe Die do
     Die.new(3).should == Die.new(3)
     Die.new(3).should_not == Die.new(4)
   end
+
+  it "should be comparable to integers" do
+    Die.new(3).should == 3
+  end
+  
+  it "should be sortable" do
+    [Die.new(4),Die.new(3)].sort.should == [Die.new(3), Die.new(4)]
+  end
   
   it "should change value upon roll" do
     Die.any_instance.expects(:rand).times(2).returns(0,1)
