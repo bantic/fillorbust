@@ -53,6 +53,10 @@ describe DiceGroup do
     it "should not consider a straight a bust" do
       DiceGroup.new([1,2,3,4,5,6]).should_not be_bust
     end
+    
+    it "should print nicely" do
+      DiceGroup.new([1,2,3]).to_s.should == "DiceGroup (1,2,3)"
+    end
   end
   
   describe "filling" do
@@ -68,10 +72,11 @@ describe DiceGroup do
       # straight
       DiceGroup.new([5,2,3,6,1,4]).should be_fill
       
+      # not fills
       DiceGroup.new([2,2,3]).should_not be_fill
       DiceGroup.new([1,4]).should_not be_fill
       DiceGroup.new([2,5,5]).should_not be_fill
-      
+      DiceGroup.new([5,5,6,5,2,6]).should_not be_fill
     end
   end
 

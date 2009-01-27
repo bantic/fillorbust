@@ -34,6 +34,10 @@ class DiceGroup
     end
   end
   
+  def to_s
+    "DiceGroup (#{@dice.collect{|d| d.value}.join(',')})"
+  end
+  
   def ==(other)
     @dice.sort == other.dice.sort
   end
@@ -66,15 +70,30 @@ class DiceGroup
       sum += d.value == 5 ? FIVE_VALUE : 0
     end
   end
+
+  def scoring_dice_count
+    scoring_dice_count = 0
+    dice_dup = @dice.dup
+    
+    return 6 if straight?
+    
+    triplets.each do |triplet_num|
+      scoring_dice_count += 3
+      3.times{dice_dup.delete_once(triplet_num)}
+    end
+    
+    scoring_dice_count += dice_dup.find_all{|d| d == 1 || d == 5}.size
+    scoring_dice_count
+  end
   
-  # Returns Array of arrays of DiceGroup objects
+  # Returns Array of DiceGroup objects
   def scoring_options
     scoring_options = []
     
     scoring_options << DiceGroup.new(@dice) if straight?
     
-    triplets.each do |triplet|
-      scoring_options << DiceGroup.new([triplet,triplet,triplet])
+    triplets.each do |triplet_num|
+      scoring_options << DiceGroup.new([triplet_num,triplet_num,triplet_num])
     end
     
     single_scoring_dice.each do |num|
@@ -84,17 +103,17 @@ class DiceGroup
     scoring_options
   end
   
+  # boolean
+  def straight?
+    @dice.size == 6 && @dice.sort == [1,2,3,4,5,6]
+  end
+  
   private
   
   # All the dice that score singly. 1s and 5s.
   # Returns Array of Die objects
   def single_scoring_dice
     @dice.find_all {|d| d == 1 || d == 5 }
-  end
-  
-  # boolean
-  def straight?
-    @dice.size == 6 && @dice.sort == [1,2,3,4,5,6]
   end
   
   # returns an empty or 1- or 2-element array of
@@ -114,14 +133,6 @@ class DiceGroup
     end
     
     triplets
-  end
-  
-  # returns fixnum
-  def scoring_dice_count
-    count = 0
-    count += 6 if straight?
-    count += 3 * triplets.size
-    count += single_scoring_dice.size
   end
   
 end
