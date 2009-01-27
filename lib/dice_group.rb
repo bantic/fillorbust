@@ -30,18 +30,19 @@ class DiceGroup
         end
       end
     else
-      raise InvalidArgumentError
+      raise InvalidArgumentError, "DiceGroup takes an array of fixnum or dice"
     end
   end
 
   def bust?
-    scoring_dice.empty?
+    score == 0
   end
   
   def fill?
-    scoring_dice.size == @dice.size
+    scoring_dice_count >= @dice.size
   end
   
+  # Returns the maximum possible score for this dicegroup
   def score
     score = 0
     
@@ -62,28 +63,34 @@ class DiceGroup
     end
   end
   
-  # returns an array of Dice
-  def scoring_dice
-    scoring_dice = []
+  # Returns Array of arrays of Die objects
+  def scoring_options
+    scoring_options = []
     
-    dice_copy = @dice.dup
-    
-    return dice_copy if straight?
+    scoring_options << @dice.dup if straight?
     
     triplets.each do |triplet|
-      3.times do
-        dice_copy.delete_once(triplet)
-        scoring_dice << Die.new(triplet)
-      end
+      scoring_options << [Die.new(triplet),
+                          Die.new(triplet),
+                          Die.new(triplet)]
     end
     
-    scoring_dice << dice_copy.find_all {|d| d.value == 1}
-    scoring_dice << dice_copy.find_all {|d| d.value == 5}
-    scoring_dice.flatten!
-  end
+    single_scoring_dice.each do |num|
+      scoring_options << [Die.new(num)]
+    end
     
+    scoring_options
+  end
+  
   private
   
+  # All the dice that score singly. 1s and 5s.
+  # Returns Array of Die objects
+  def single_scoring_dice
+    @dice.find_all {|d| d == 1 || d == 5 }
+  end
+  
+  # boolean
   def straight?
     @dice.size == 6 && @dice.sort == [1,2,3,4,5,6]
   end
@@ -106,4 +113,13 @@ class DiceGroup
     
     triplets
   end
+  
+  # returns fixnum
+  def scoring_dice_count
+    count = 0
+    count += 6 if straight?
+    count += 3 * triplets.size
+    count += single_scoring_dice.size
+  end
+  
 end

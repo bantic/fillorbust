@@ -68,28 +68,6 @@ describe DiceGroup do
   end
 
   describe "scoring" do
-    it "should recognize 1s as scoring dice" do
-      DiceGroup.new([1]).scoring_dice.should == [Die.new(1)]
-    end
-    
-    it "should recognize 5s as scoring dice" do
-      DiceGroup.new([5]).scoring_dice.should == [Die.new(5)]
-    end
-    
-    it "should recognize 1s and 5s when mixed with other dice" do
-      DiceGroup.new([1,2,3,4,5]).scoring_dice.should == [Die.new(1), Die.new(5)]
-    end
-    
-    it "should recognize triplets as scoring dice" do
-      DiceGroup.new([2,2,2]).scoring_dice.should == [Die.new(2), Die.new(2), Die.new(2)]
-    end
-    
-    it "should recognize a straight as scoring" do
-      DiceGroup.new([6,2,3,4,5,1]).scoring_dice.sort.should == 
-        [Die.new(1), Die.new(2), Die.new(3),
-         Die.new(4), Die.new(5), Die.new(6)]
-    end
-    
     it "should know the correct value of 1s and 5s" do
       DiceGroup.new([1,1]).score.should == 200
       DiceGroup.new([5]).score.should == 50
@@ -116,4 +94,25 @@ describe DiceGroup do
     end
   end
   
+  describe "#scoring_options" do
+    it "should present an array of possible moves" do
+      DiceGroup.new([1,2,3]).scoring_options.should == [[Die.new(1)]]
+      DiceGroup.new([1,2,3,4,5]).scoring_options.should == 
+        [[Die.new(1)],
+         [Die.new(5)]]
+      DiceGroup.new([1,2,3,4,5,6]).scoring_options.should == 
+        [
+         [Die.new(1),Die.new(2),Die.new(3),Die.new(4),Die.new(5),Die.new(6)],
+         [Die.new(1)],
+         [Die.new(5)],
+        ]
+      DiceGroup.new([1,1,1]).scoring_options.should ==
+        [
+          [Die.new(1),Die.new(1),Die.new(1)],
+          [Die.new(1)],
+          [Die.new(1)],
+          [Die.new(1)]
+        ]
+    end
+  end
 end
