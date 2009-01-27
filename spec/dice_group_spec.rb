@@ -4,7 +4,7 @@ require File.dirname(__FILE__) + '/../lib/dice_group'
 
 describe DiceGroup do
   describe "basic dice group functionality" do
-    it "should have the right number of dice" do
+    it "should have the right default number of dice" do
       DiceGroup.new.dice.size.should == 6
     end
   
@@ -25,6 +25,14 @@ describe DiceGroup do
       dice = [4, Die.new(3), 2]
       dg = DiceGroup.new(dice)
       dg.dice.should == [Die.new(4), Die.new(3), Die.new(2)]
+    end
+    
+    it "should be comparable" do
+      DiceGroup.new([1,2,3]).should == DiceGroup.new([1,2,3])
+    end
+    
+    it "should be comparable if the dice are the same but in a differe order" do
+      DiceGroup.new([1,2,3]).should == DiceGroup.new([3,1,2])
     end
   end
 
@@ -96,22 +104,22 @@ describe DiceGroup do
   
   describe "#scoring_options" do
     it "should present an array of possible moves" do
-      DiceGroup.new([1,2,3]).scoring_options.should == [[Die.new(1)]]
+      DiceGroup.new([1,2,3]).scoring_options.should == [DiceGroup.new([1])]
       DiceGroup.new([1,2,3,4,5]).scoring_options.should == 
-        [[Die.new(1)],
-         [Die.new(5)]]
+        [DiceGroup.new([1]),
+         DiceGroup.new([5])]
       DiceGroup.new([1,2,3,4,5,6]).scoring_options.should == 
         [
-         [Die.new(1),Die.new(2),Die.new(3),Die.new(4),Die.new(5),Die.new(6)],
-         [Die.new(1)],
-         [Die.new(5)],
+         DiceGroup.new([1,2,3,4,5,6]),
+         DiceGroup.new([1]),
+         DiceGroup.new([5])
         ]
       DiceGroup.new([1,1,1]).scoring_options.should ==
         [
-          [Die.new(1),Die.new(1),Die.new(1)],
-          [Die.new(1)],
-          [Die.new(1)],
-          [Die.new(1)]
+          DiceGroup.new([1,1,1]),
+          DiceGroup.new([1]),
+          DiceGroup.new([1]),
+          DiceGroup.new([1])
         ]
     end
   end

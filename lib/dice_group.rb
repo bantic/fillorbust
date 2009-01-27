@@ -33,6 +33,10 @@ class DiceGroup
       raise InvalidArgumentError, "DiceGroup takes an array of fixnum or dice"
     end
   end
+  
+  def ==(other)
+    @dice.sort == other.dice.sort
+  end
 
   def bust?
     score == 0
@@ -63,20 +67,18 @@ class DiceGroup
     end
   end
   
-  # Returns Array of arrays of Die objects
+  # Returns Array of arrays of DiceGroup objects
   def scoring_options
     scoring_options = []
     
-    scoring_options << @dice.dup if straight?
+    scoring_options << DiceGroup.new(@dice) if straight?
     
     triplets.each do |triplet|
-      scoring_options << [Die.new(triplet),
-                          Die.new(triplet),
-                          Die.new(triplet)]
+      scoring_options << DiceGroup.new([triplet,triplet,triplet])
     end
     
     single_scoring_dice.each do |num|
-      scoring_options << [Die.new(num)]
+      scoring_options << DiceGroup.new([num])
     end
     
     scoring_options
