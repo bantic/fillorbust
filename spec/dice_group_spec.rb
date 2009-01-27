@@ -53,9 +53,14 @@ describe DiceGroup do
     it "should not consider a straight a bust" do
       DiceGroup.new([1,2,3,4,5,6]).should_not be_bust
     end
-    
-    it "should print nicely" do
-      DiceGroup.new([1,2,3]).to_s.should == "DiceGroup (1,2,3)"
+
+    describe "#to_s" do
+      it "should look right" do
+        DiceGroup.new([1,2,3]).to_s.should == "DiceGroup (1,2,3)"
+      end
+      it "should print dice in order" do
+        DiceGroup.new([3,2,1]).to_s.should == "DiceGroup (1,2,3)"
+      end
     end
   end
   

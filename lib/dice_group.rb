@@ -35,7 +35,7 @@ class DiceGroup
   end
   
   def to_s
-    "DiceGroup (#{@dice.collect{|d| d.value}.join(',')})"
+    "DiceGroup (#{@dice.sort.collect{|d| d.value}.join(',')})"
   end
   
   def ==(other)
