@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'mocha'
 require 'spec'
-require File.dirname(__FILE__) + '/../lib/die'
+require File.dirname(__FILE__) + '/../fillorbust'
 
 describe Die do
   it "should have a value upon initialization" do

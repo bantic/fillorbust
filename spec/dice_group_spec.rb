@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'spec'
-require File.dirname(__FILE__) + '/../lib/dice_group'
+require File.dirname(__FILE__) + '/../fillorbust'
 
 describe DiceGroup do
   describe "basic dice group functionality" do

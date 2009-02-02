@@ -5,4 +5,8 @@ class Array
     end
     nil
   end
+  
+  def average
+    inject(0){|sum,val| sum += val}.to_f/size
+  end
 end
