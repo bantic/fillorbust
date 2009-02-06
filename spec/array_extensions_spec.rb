@@ -9,6 +9,12 @@ describe Array do
     a.should == [2,1,2]
   end
   
+  it "should not fail if there's nothing to delete_once" do
+    a = [1,2,1,2]
+    a.delete_once(3)
+    a.should == [1,2,1,2]
+  end
+  
   it "should implement #average" do
     [1,1,1].average.should == 1
     [1,2,1].average.should == 4.0/3

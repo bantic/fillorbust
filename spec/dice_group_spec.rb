@@ -13,7 +13,7 @@ describe DiceGroup do
       dg = DiceGroup.new(dice)
       dg.dice.should == dice
     end
-  
+    
     it "should take an array of numbers as dice" do
       dice = [2,3,4]
       dg = DiceGroup.new(dice)

@@ -29,8 +29,6 @@ class DiceGroup
           @dice << Die.new(die)
         end
       end
-    else
-      raise InvalidArgumentError, "DiceGroup takes an array of fixnum or dice"
     end
   end
   
